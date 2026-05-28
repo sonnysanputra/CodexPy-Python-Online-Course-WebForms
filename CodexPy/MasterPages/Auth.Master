@@ -1,0 +1,14 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Auth.master.cs" Inherits="CodexPy.MasterPages.AuthMaster" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title><asp:ContentPlaceHolder ID="TitlePH" runat="server">Sign in — CodexPy</asp:ContentPlaceHolder></title>
+    <link rel="stylesheet" href="<%= ResolveUrl("~/Content/site.css") %>" />
+</head>
+<body style="margin:0; overflow:hidden;">
+    <form id="form1" runat="server">
+        <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+    </form>
+</body>
+</html>

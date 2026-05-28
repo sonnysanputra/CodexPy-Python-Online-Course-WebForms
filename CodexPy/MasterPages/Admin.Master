@@ -1,0 +1,57 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Admin.master.cs" Inherits="CodexPy.MasterPages.AdminMaster" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title><asp:ContentPlaceHolder ID="TitlePH" runat="server">Admin — CodexPy</asp:ContentPlaceHolder></title>
+    <link rel="stylesheet" href="<%= ResolveUrl("~/Content/site.css") %>" />
+    <asp:ContentPlaceHolder ID="HeadExtra" runat="server" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="app-shell">
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="logo">
+                    <span style="width:26px;height:26px;border-radius:7px;background:var(--ink);color:var(--py-yellow);display:grid;place-items:center;font-family:var(--font-mono);font-weight:700;font-size:14px;">&lt;/</span>
+                    Codex<span class="py">Py</span>
+                </div>
+                <h6>Admin</h6>
+                <a href="<%= ResolveUrl("~/Admin/Dashboard.aspx") %>" class='<%= IsActive("Dashboard.aspx") %>'>Overview</a>
+                <a href="<%= ResolveUrl("~/Admin/Users.aspx") %>" class='<%= IsActive("Users.aspx") %>'>Manage Users</a>
+                <a href="<%= ResolveUrl("~/Admin/Modules.aspx") %>" class='<%= IsActive("Modules.aspx") %>'>Manage Modules</a>
+                <a href="<%= ResolveUrl("~/Admin/Quizzes.aspx") %>" class='<%= IsActive("Quizzes.aspx") %>'>Manage Quizzes</a>
+                <a href="<%= ResolveUrl("~/Admin/Reports.aspx") %>" class='<%= IsActive("Reports.aspx") %>'>Reports</a>
+
+                <div style="margin-top:auto;padding-top:16px;border-top:1px solid var(--border)">
+                    <a href="<%= ResolveUrl("~/Auth/Logout.aspx") %>" class="nav-item">Log out</a>
+                </div>
+            </aside>
+
+            <!-- Main content area -->
+            <div class="app-main">
+                <div class="topbar">
+                    <div class="crumbs">
+                        CodexPy Admin <span style="margin: 0 8px">/</span> 
+                        <strong><asp:ContentPlaceHolder ID="CrumbPH" runat="server">Admin</asp:ContentPlaceHolder></strong>
+                    </div>
+                    <div class="actions">
+                        <div style="display:flex;align-items:center;gap:10px;padding:4px 10px 4px 4px;border-radius:999px;background:var(--bg-sunk)">
+                            <div class="avatar" style="width:28px;height:28px;font-size:11px">
+                                <asp:Literal ID="UserInitials" runat="server" Text="A" />
+                            </div>
+                            <span style="font-size:13px;font-weight:500">
+                                <asp:Literal ID="UserName" runat="server" Text="Admin" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+            </div>
+
+        </div>
+    </form>
+</body>
+</html>
