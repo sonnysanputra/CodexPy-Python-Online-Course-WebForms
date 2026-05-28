@@ -93,7 +93,8 @@ namespace CodexPy.Auth
             if (role == "Admin")
                 Response.Redirect("~/Admin/Dashboard.aspx");
             else
-                Response.Redirect("~/Default.aspx"); // user landing — placeholder for now
+                Response.Redirect("~/User/Dashboard.aspx");
         }
+
     }
 }

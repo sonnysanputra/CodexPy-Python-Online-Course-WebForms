@@ -124,6 +124,7 @@
     <Content Include="Admin\LessonEdit.aspx" />
     <Content Include="Admin\ModuleEdit.aspx" />
     <Content Include="Admin\Modules.aspx" />
+    <Content Include="Admin\Profile.aspx" />
     <Content Include="Admin\QuestionEdit.aspx" />
     <Content Include="Admin\Questions.aspx" />
     <Content Include="Admin\QuizEdit.aspx" />
@@ -137,6 +138,12 @@
     <Content Include="Content\site.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="User\Dashboard.aspx" />
+    <Content Include="User\ModuleDetail.aspx" />
+    <Content Include="User\Modules.aspx" />
+    <Content Include="User\Profile.aspx" />
+    <Content Include="User\Progress.aspx" />
+    <Content Include="User\Quiz.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +181,13 @@
     </Compile>
     <Compile Include="Admin\Modules.aspx.designer.cs">
       <DependentUpon>Modules.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Profile.aspx.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Profile.aspx.designer.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\QuestionEdit.aspx.cs">
       <DependentUpon>QuestionEdit.aspx</DependentUpon>
@@ -270,11 +284,61 @@
     <Compile Include="MasterPages\Auth.Master.designer.cs">
       <DependentUpon>Auth.Master</DependentUpon>
     </Compile>
+    <Compile Include="MasterPages\Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterPages\Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User\Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User\ModuleDetail.aspx.cs">
+      <DependentUpon>ModuleDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\ModuleDetail.aspx.designer.cs">
+      <DependentUpon>ModuleDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User\Modules.aspx.cs">
+      <DependentUpon>Modules.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\Modules.aspx.designer.cs">
+      <DependentUpon>Modules.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User\Profile.aspx.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\Profile.aspx.designer.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User\Progress.aspx.cs">
+      <DependentUpon>Progress.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\Progress.aspx.designer.cs">
+      <DependentUpon>Progress.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="User\Quiz.aspx.cs">
+      <DependentUpon>Quiz.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User\Quiz.aspx.designer.cs">
+      <DependentUpon>Quiz.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="MasterPages\Admin.Master" />
     <Content Include="MasterPages\Auth.Master" />
+    <Content Include="MasterPages\Site.Master" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

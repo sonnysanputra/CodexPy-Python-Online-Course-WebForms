@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using CodexPy.Data;
+using System;
 
 namespace CodexPy
 {
@@ -8,30 +6,18 @@ namespace CodexPy
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var sb = new StringBuilder();
-            try
+            // Route visitors based on auth state.
+            if (Session["UserId"] == null)
             {
-                using (var conn = DbHelper.GetConnection())
-                using (var cmd = new Npgsql.NpgsqlCommand("SELECT id, title, difficulty FROM modules ORDER BY sort_order", conn))
-                using (var reader = cmd.ExecuteReader())
-                {
-                    sb.Append("<ul>");
-                    while (reader.Read())
-                    {
-                        sb.AppendFormat("<li>#{0} — <strong>{1}</strong> ({2})</li>",
-                            reader.GetInt32(0),
-                            reader.GetString(1),
-                            reader.GetString(2));
-                    }
-                    sb.Append("</ul>");
-                }
-                sb.Insert(0, "<p style='color:green'>✓ Connection successful!</p>");
+                Response.Redirect("~/Auth/Login.aspx");
+                return;
             }
-            catch (Exception ex)
-            {
-                sb.AppendFormat("<p style='color:red'>✗ Connection FAILED: {0}</p>", ex.Message);
-            }
-            ResultLiteral.Text = sb.ToString();
+
+            string role = Session["Role"]?.ToString();
+            if (role == "Admin")
+                Response.Redirect("~/Admin/Dashboard.aspx");
+            else
+                Response.Redirect("~/User/Dashboard.aspx");
         }
     }
 }
