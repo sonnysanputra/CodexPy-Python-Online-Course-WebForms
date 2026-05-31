@@ -76,9 +76,9 @@ namespace CodexPy.Auth
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ShowError("Sign-in failed: " + ex.Message);
+                ShowError("Something went wrong. Please try again.");
             }
         }
 
