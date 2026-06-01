@@ -13,7 +13,7 @@
     --ink: #1A1A1F;
     --ink-2: #2C2A28;
     --muted: #6B6F76;
-    --muted-2: #9A9892;
+    --muted-2: #616570;
     --border: #ECE7DD;
     --border-2: #E0DAC9;
     --hairline: rgba(26,26,31,0.06);
@@ -379,7 +379,7 @@ input, textarea, select {
         border-radius: var(--r-pill);
         font-size: 12.5px;
         font-weight: 500;
-        color: var(--muted);
+        color: var(--ink-2);
     }
 
         .seg button.on {
@@ -446,7 +446,7 @@ input, textarea, select {
         font-size: 11.5px;
         text-transform: uppercase;
         letter-spacing: .06em;
-        color: var(--muted);
+        color: var(--ink-2);
     }
 
     .data-table th {

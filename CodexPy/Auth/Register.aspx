@@ -22,47 +22,59 @@
             </asp:Panel>
 
             <div style="margin-bottom:14px;">
-                <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Full name</div>
-                <asp:TextBox ID="NameBox" runat="server" CssClass="input" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="NameBox"
+                <label for="NameBox" style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500; display:block;">Full name</label>
+                <asp:TextBox ID="NameBox" runat="server" CssClass="input"
+                    MaxLength="100" ClientIDMode="Static" aria-required="true" aria-describedby="NameReq" />
+                <asp:RequiredFieldValidator ID="NameReq" runat="server" ClientIDMode="Static"
+                    ControlToValidate="NameBox"
                     CssClass="validation-error" ErrorMessage="Name is required" Display="Dynamic" />
             </div>
 
             <div style="margin-bottom:14px;">
-                <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Email</div>
-                <asp:TextBox ID="EmailBox" runat="server" CssClass="input" TextMode="Email" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="EmailBox"
+                <label for="EmailBox" style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500; display:block;">Email</label>
+                <asp:TextBox ID="EmailBox" runat="server" CssClass="input" TextMode="Email"
+                    MaxLength="254" ClientIDMode="Static" aria-required="true" aria-describedby="RegEmailReq RegEmailFormat" />
+                <asp:RequiredFieldValidator ID="RegEmailReq" runat="server" ClientIDMode="Static"
+                    ControlToValidate="EmailBox"
                     CssClass="validation-error" ErrorMessage="Email is required" Display="Dynamic" />
-                <asp:RegularExpressionValidator runat="server" ControlToValidate="EmailBox"
+                <asp:RegularExpressionValidator ID="RegEmailFormat" runat="server" ClientIDMode="Static"
+                    ControlToValidate="EmailBox"
                     CssClass="validation-error" ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$"
                     ErrorMessage="Enter a valid email address" Display="Dynamic" />
             </div>
 
             <div style="margin-bottom:14px;">
-                <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Password</div>
-                <asp:TextBox ID="PasswordBox" runat="server" CssClass="input" TextMode="Password" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="PasswordBox"
+                <label for="PasswordBox" style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500; display:block;">Password</label>
+                <asp:TextBox ID="PasswordBox" runat="server" CssClass="input" TextMode="Password"
+                    MaxLength="128" ClientIDMode="Static" aria-required="true" aria-describedby="RegPasswordReq RegPasswordFormat" />
+                <asp:RequiredFieldValidator ID="RegPasswordReq" runat="server" ClientIDMode="Static"
+                    ControlToValidate="PasswordBox"
                     CssClass="validation-error" ErrorMessage="Password is required" Display="Dynamic" />
-                <asp:RegularExpressionValidator runat="server" ControlToValidate="PasswordBox"
+                <asp:RegularExpressionValidator ID="RegPasswordFormat" runat="server" ClientIDMode="Static"
+                    ControlToValidate="PasswordBox"
                     CssClass="validation-error" ValidationExpression="^.{8,}$"
                     ErrorMessage="Password must be at least 8 characters" Display="Dynamic" />
             </div>
 
             <div style="margin-bottom:14px;">
-                <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Confirm password</div>
-                <asp:TextBox ID="ConfirmBox" runat="server" CssClass="input" TextMode="Password" />
-                <asp:CompareValidator runat="server" ControlToValidate="ConfirmBox"
+                <label for="ConfirmBox" style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500; display:block;">Confirm password</label>
+                <asp:TextBox ID="ConfirmBox" runat="server" CssClass="input" TextMode="Password"
+                    MaxLength="128" ClientIDMode="Static" aria-describedby="RegConfirmCompare" />
+                <asp:CompareValidator ID="RegConfirmCompare" runat="server" ClientIDMode="Static"
+                    ControlToValidate="ConfirmBox"
                     ControlToCompare="PasswordBox" CssClass="validation-error"
                     ErrorMessage="Passwords do not match" Display="Dynamic" />
             </div>
 
             <div style="margin-bottom:14px;">
-                <div style="font-size:12px; color:var(--muted); margin-bottom:8px; font-weight:500;">I am a…</div>
-                <asp:RadioButtonList ID="SegmentList" runat="server" RepeatDirection="Horizontal" CssClass="seg" RepeatLayout="Flow">
-                    <asp:ListItem Value="School" Text="&nbsp;School student&nbsp;" />
-                    <asp:ListItem Value="University" Text="&nbsp;University student&nbsp;" Selected="True" />
-                    <asp:ListItem Value="Self-learner" Text="&nbsp;Self-learner&nbsp;" />
-                </asp:RadioButtonList>
+                <fieldset style="border:none; margin:0; padding:0;">
+                    <legend style="font-size:12px; color:var(--muted); margin-bottom:8px; font-weight:500; padding:0;">I am a…</legend>
+                    <asp:RadioButtonList ID="SegmentList" runat="server" RepeatDirection="Horizontal" CssClass="seg" RepeatLayout="Flow">
+                        <asp:ListItem Value="School" Text="&nbsp;School student&nbsp;" />
+                        <asp:ListItem Value="University" Text="&nbsp;University student&nbsp;" Selected="True" />
+                        <asp:ListItem Value="Self-learner" Text="&nbsp;Self-learner&nbsp;" />
+                    </asp:RadioButtonList>
+                </fieldset>
             </div>
 
             <asp:Button ID="RegisterButton" runat="server" Text="Create my account"

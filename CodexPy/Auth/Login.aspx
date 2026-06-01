@@ -22,21 +22,23 @@
             </asp:Panel>
 
             <div style="margin-bottom:14px;">
-                <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Email</div>
-                <asp:TextBox ID="EmailBox" runat="server" CssClass="input" TextMode="Email" />
-                <asp:RequiredFieldValidator ID="EmailReq" runat="server"
+                <label for="EmailBox" style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500; display:block;">Email</label>
+                <asp:TextBox ID="EmailBox" runat="server" CssClass="input" TextMode="Email"
+                    MaxLength="254" ClientIDMode="Static" aria-required="true" aria-describedby="EmailReq EmailFormat" />
+                <asp:RequiredFieldValidator ID="EmailReq" runat="server" ClientIDMode="Static"
                     ControlToValidate="EmailBox" CssClass="validation-error"
                     ErrorMessage="Email is required" Display="Dynamic" />
-                <asp:RegularExpressionValidator ID="EmailFormat" runat="server"
+                <asp:RegularExpressionValidator ID="EmailFormat" runat="server" ClientIDMode="Static"
                     ControlToValidate="EmailBox" CssClass="validation-error"
                     ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$"
                     ErrorMessage="Enter a valid email address" Display="Dynamic" />
             </div>
 
             <div style="margin-bottom:14px;">
-                <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Password</div>
-                <asp:TextBox ID="PasswordBox" runat="server" CssClass="input" TextMode="Password" />
-                <asp:RequiredFieldValidator ID="PasswordReq" runat="server"
+                <label for="PasswordBox" style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500; display:block;">Password</label>
+                <asp:TextBox ID="PasswordBox" runat="server" CssClass="input" TextMode="Password"
+                    MaxLength="128" ClientIDMode="Static" aria-required="true" aria-describedby="PasswordReq" />
+                <asp:RequiredFieldValidator ID="PasswordReq" runat="server" ClientIDMode="Static"
                     ControlToValidate="PasswordBox" CssClass="validation-error"
                     ErrorMessage="Password is required" Display="Dynamic" />
             </div>

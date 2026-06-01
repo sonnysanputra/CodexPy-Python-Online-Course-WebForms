@@ -60,11 +60,11 @@ namespace CodexPy.Auth
                     }
                 }
 
-                Response.Redirect("~/Default.aspx");
+                Response.Redirect("~/User/Dashboard.aspx");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ShowError("Registration failed: " + ex.Message);
+                ShowError("Something went wrong. Please try again.");
             }
         }
 

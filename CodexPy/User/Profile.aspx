@@ -38,25 +38,30 @@
             <h3 class="h3" style="margin-bottom:18px;">Personal information</h3>
 
             <div style="margin-bottom:14px;">
-                <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Full name</div>
-                <asp:TextBox ID="NameBox" runat="server" CssClass="input" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="NameBox"
+                <label for="NameBox" style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500; display:block;">Full name</label>
+                <asp:TextBox ID="NameBox" runat="server" CssClass="input"
+                    ClientIDMode="Static" aria-required="true" aria-describedby="ProfileNameReq" />
+                <asp:RequiredFieldValidator ID="ProfileNameReq" runat="server" ClientIDMode="Static"
+                    ControlToValidate="NameBox"
                     CssClass="validation-error" ErrorMessage="Name is required" Display="Dynamic" />
             </div>
 
             <div style="margin-bottom:14px;">
-                <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Email</div>
-                <asp:TextBox ID="EmailBox" runat="server" CssClass="input" TextMode="Email" />
-                <asp:RequiredFieldValidator runat="server" ControlToValidate="EmailBox"
+                <label for="EmailBox" style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500; display:block;">Email</label>
+                <asp:TextBox ID="EmailBox" runat="server" CssClass="input" TextMode="Email"
+                    ClientIDMode="Static" aria-required="true" aria-describedby="ProfileEmailReq ProfileEmailFormat" />
+                <asp:RequiredFieldValidator ID="ProfileEmailReq" runat="server" ClientIDMode="Static"
+                    ControlToValidate="EmailBox"
                     CssClass="validation-error" ErrorMessage="Email is required" Display="Dynamic" />
-                <asp:RegularExpressionValidator runat="server" ControlToValidate="EmailBox"
+                <asp:RegularExpressionValidator ID="ProfileEmailFormat" runat="server" ClientIDMode="Static"
+                    ControlToValidate="EmailBox"
                     CssClass="validation-error" ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$"
                     ErrorMessage="Enter a valid email address" Display="Dynamic" />
             </div>
 
             <div style="margin-bottom:14px;">
-                <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Segment</div>
-                <asp:DropDownList ID="SegmentList" runat="server" CssClass="input">
+                <label for="SegmentList" style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500; display:block;">Segment</label>
+                <asp:DropDownList ID="SegmentList" runat="server" CssClass="input" ClientIDMode="Static">
                     <asp:ListItem Value="School" Text="School student" />
                     <asp:ListItem Value="University" Text="University student" />
                     <asp:ListItem Value="Self-learner" Text="Self-learner" />
@@ -70,17 +75,21 @@
             <p style="color:var(--muted); font-size:13px; margin:0 0 18px;">Leave blank to keep your current password.</p>
 
             <div style="margin-bottom:14px;">
-                <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">New password</div>
-                <asp:TextBox ID="NewPasswordBox" runat="server" CssClass="input" TextMode="Password" />
-                <asp:RegularExpressionValidator runat="server" ControlToValidate="NewPasswordBox"
+                <label for="NewPasswordBox" style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500; display:block;">New password</label>
+                <asp:TextBox ID="NewPasswordBox" runat="server" CssClass="input" TextMode="Password"
+                    ClientIDMode="Static" aria-describedby="ProfileNewPasswordFormat" />
+                <asp:RegularExpressionValidator ID="ProfileNewPasswordFormat" runat="server" ClientIDMode="Static"
+                    ControlToValidate="NewPasswordBox"
                     CssClass="validation-error" ValidationExpression="^.{8,}$"
                     ErrorMessage="Password must be at least 8 characters" Display="Dynamic" />
             </div>
 
             <div style="margin-bottom:14px;">
-                <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Confirm new password</div>
-                <asp:TextBox ID="ConfirmPasswordBox" runat="server" CssClass="input" TextMode="Password" />
-                <asp:CompareValidator runat="server" ControlToValidate="ConfirmPasswordBox"
+                <label for="ConfirmPasswordBox" style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500; display:block;">Confirm new password</label>
+                <asp:TextBox ID="ConfirmPasswordBox" runat="server" CssClass="input" TextMode="Password"
+                    ClientIDMode="Static" aria-describedby="ProfileConfirmCompare" />
+                <asp:CompareValidator ID="ProfileConfirmCompare" runat="server" ClientIDMode="Static"
+                    ControlToValidate="ConfirmPasswordBox"
                     ControlToCompare="NewPasswordBox" CssClass="validation-error"
                     ErrorMessage="Passwords do not match" Display="Dynamic" />
             </div>
