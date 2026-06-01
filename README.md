@@ -134,6 +134,23 @@ cd CodexPy
 2. On first open, Visual Studio will restore NuGet packages automatically. If not, right-click the solution → **Restore NuGet Packages**.
 3. Press **`Ctrl+Shift+B`** to build. Should succeed with 0 errors.
 
+### 6. Add your Gemini API key (for the AI Python tutor)
+
+The Supabase connection is already configured in `Web.config` — you don't need to change it. The only thing you need to add is a personal **Gemini API key** for the floating AI chat widget.
+
+1. Go to [aistudio.google.com/apikey](https://aistudio.google.com/apikey) and sign in with any Google account.
+2. Click **Create API key** → copy the key (it looks like `AIzaSyD-...`).
+3. Open `CodexPy/Web.config` in Visual Studio.
+4. Find this line:
+   ```xml
+   <add key="GeminiApiKey" value="PASTE_YOUR_GEMINI_API_KEY_HERE" />
+   ```
+5. Replace `PASTE_YOUR_GEMINI_API_KEY_HERE` with your actual key (between the quotes), save the file.
+
+The Gemini free tier is generous (1,500 requests/day, no credit card required). Each teammate uses their own key so quotas don't collide.
+
+⚠️ **Don't commit your key.** When pushing changes, replace the value back to the placeholder, or use `git update-index --skip-worktree CodexPy/Web.config` to tell git to ignore local changes to Web.config.
+
 ---
 
 ## Running the App
