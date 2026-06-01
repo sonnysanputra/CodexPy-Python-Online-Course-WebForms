@@ -11,7 +11,7 @@
     // Bail out if the widget isn't on this page (e.g. login page)
     if (!toggleBtn || !panel) return;
 
-    var endpoint = window.codexpyChatEndpoint || '/Handlers/ChatHandler.ashx';
+    var endpoint = window.codexpyChatEndpoint || '/AIAgent/ChatHandler.ashx';
 
     // ---------- Toggle open/close ------------------------------------------
     toggleBtn.addEventListener('click', function () {

@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="ChatHandler.ashx.cs" Class="CodexPy.Handlers.ChatHandler" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="ChatHandler.ashx.cs" Class="CodexPy.AIAgent.ChatHandler" %>

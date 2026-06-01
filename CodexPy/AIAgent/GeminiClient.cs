@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace CodexPy.Services
+namespace CodexPy.AIAgent
 {
     /// <summary>
     /// One turn in a chat conversation.

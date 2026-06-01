@@ -1,5 +1,4 @@
 ﻿using CodexPy.Data;
-using CodexPy.Services;
 using Newtonsoft.Json;
 using Npgsql;
 using System;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.SessionState;
 
-namespace CodexPy.Handlers
+namespace CodexPy.AIAgent
 {
     /// <summary>
     /// AJAX endpoint for the chat widget.
