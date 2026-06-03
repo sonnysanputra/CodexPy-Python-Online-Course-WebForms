@@ -6,34 +6,38 @@
 <asp:Content ContentPlaceHolderID="MainContent" runat="server">
     <div style="padding:28px 32px; overflow-y:auto;">
 
-        <!-- Header -->
+        <!-- ========== PAGE HEADER (eyebrow + title + tagline) ========== -->
         <div style="margin-bottom:22px;">
             <div class="eyebrow">Analytics</div>
             <h1 class="h1">Reports</h1>
             <p style="color:var(--muted); margin-top:4px; font-size:14px;">Cohort engagement, content performance, and user progress.</p>
         </div>
 
-        <!-- Top KPI cards -->
+        <!-- ========== TOP KPI CARDS (4-column grid of headline metrics) ========== -->
         <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:18px;">
 
+            <!-- KPI 1: Total registered learners -->
             <div class="card" style="padding:18px;">
                 <div style="font-size:12px; color:var(--muted); font-weight:500; margin-bottom:12px;">Total learners</div>
                 <div style="font-size:26px; font-weight:600;"><asp:Literal ID="TotalUsersLit" runat="server" Text="0" /></div>
                 <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">Registered accounts</div>
             </div>
 
+            <!-- KPI 2: Average quiz score across all attempts -->
             <div class="card" style="padding:18px;">
                 <div style="font-size:12px; color:var(--muted); font-weight:500; margin-bottom:12px;">Average quiz score</div>
                 <div style="font-size:26px; font-weight:600;"><asp:Literal ID="AvgScoreLit" runat="server" Text="—" /></div>
                 <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">Across all attempts</div>
             </div>
 
+            <!-- KPI 3: All-time quiz attempts -->
             <div class="card" style="padding:18px;">
                 <div style="font-size:12px; color:var(--muted); font-weight:500; margin-bottom:12px;">Total quiz attempts</div>
                 <div style="font-size:26px; font-weight:600;"><asp:Literal ID="TotalAttemptsLit" runat="server" Text="0" /></div>
                 <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">All time</div>
             </div>
 
+            <!-- KPI 4: Number of published modules -->
             <div class="card" style="padding:18px;">
                 <div style="font-size:12px; color:var(--muted); font-weight:500; margin-bottom:12px;">Active modules</div>
                 <div style="font-size:26px; font-weight:600;"><asp:Literal ID="ActiveModulesLit" runat="server" Text="0" /></div>
@@ -42,10 +46,10 @@
 
         </div>
 
-        <!-- Audience by segment + Module engagement -->
+        <!-- ========== ROW 1 — TWO-COLUMN (Audience by segment + Module engagement) ========== -->
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
 
-            <!-- Audience by segment -->
+            <!-- Left card: Audience by segment (with progress bar per segment) -->
             <div class="card" style="padding:24px;">
                 <h3 class="h3" style="margin-bottom:14px;">Audience by segment</h3>
                 <asp:Repeater ID="SegmentRepeater" runat="server">
@@ -64,7 +68,7 @@
                 </asp:Panel>
             </div>
 
-            <!-- Module engagement -->
+            <!-- Right card: Module engagement (enrolled learners per module) -->
             <div class="card" style="padding:24px;">
                 <h3 class="h3" style="margin-bottom:14px;">Module engagement</h3>
                 <asp:Repeater ID="ModuleEngagementRepeater" runat="server">
@@ -87,10 +91,10 @@
 
         </div>
 
-        <!-- Quiz performance + Recent attempts -->
+        <!-- ========== ROW 2 — TWO-COLUMN (Quiz performance + User growth) ========== -->
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
 
-            <!-- Quiz performance -->
+            <!-- Left card: Quiz performance (avg score color-coded green/yellow/red) -->
             <div class="card" style="padding:24px;">
                 <h3 class="h3" style="margin-bottom:14px;">Quiz performance</h3>
                 <asp:Repeater ID="QuizPerfRepeater" runat="server">
@@ -113,7 +117,7 @@
                 </asp:Panel>
             </div>
 
-            <!-- Recent registrations -->
+            <!-- Right card: User growth in the last 30 days (one row per registration date) -->
             <div class="card" style="padding:24px;">
                 <h3 class="h3" style="margin-bottom:14px;">User growth (last 30 days)</h3>
                 <asp:Repeater ID="GrowthRepeater" runat="server">

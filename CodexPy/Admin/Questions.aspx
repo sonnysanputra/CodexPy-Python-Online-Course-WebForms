@@ -6,10 +6,12 @@
 <asp:Content ContentPlaceHolderID="MainContent" runat="server">
     <div style="padding:28px 32px; overflow-y:auto;">
 
+        <!-- ========== BREADCRUMB (link back to parent Quizzes list) ========== -->
         <div style="margin-bottom:8px;">
             <a href="<%= ResolveUrl("~/Admin/Quizzes.aspx") %>" style="font-size:13px; color:var(--py-blue);">← Back to quizzes</a>
         </div>
 
+        <!-- ========== PAGE HEADER (quiz title heading + "New question" button) ========== -->
         <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:22px;">
             <div>
                 <div class="eyebrow">Quiz questions</div>
@@ -21,12 +23,15 @@
             <asp:HyperLink ID="AddQuestionLink" runat="server" CssClass="btn btn-primary" Text="+ New question" />
         </div>
 
+        <!-- ========== STATUS BANNER (shows success/error after a delete) ========== -->
         <asp:Panel ID="MessagePanel" runat="server" Visible="false" style="margin-bottom:14px; padding:10px 14px; border-radius:10px; font-size:13.5px;">
             <asp:Literal ID="MessageLit" runat="server" />
         </asp:Panel>
 
+        <!-- ========== QUESTIONS LIST TABLE (card-wrapped data table) ========== -->
         <div class="card" style="padding:0; overflow:hidden;">
             <table class="data-table">
+                <!-- Table header row (column titles) -->
                 <thead>
                     <tr>
                         <th style="width:60px;">#</th>
@@ -36,20 +41,26 @@
                         <th style="text-align:right;">Actions</th>
                     </tr>
                 </thead>
+                <!-- Table body — one row per question via Repeater -->
                 <tbody>
                     <asp:Repeater ID="QuestionsRepeater" runat="server">
                         <ItemTemplate>
                             <tr>
+                                <!-- Question number cell (Q1, Q2, …) -->
                                 <td style="font-family:var(--font-mono); font-size:12px; color:var(--muted);">
                                     Q<%# Container.ItemIndex + 1 %>
                                 </td>
+                                <!-- Prompt cell (truncated to 120 chars) -->
                                 <td style="max-width:480px;">
                                     <div style="font-size:13.5px;"><%# Truncate(Eval("prompt") as string, 120) %></div>
                                 </td>
+                                <!-- Correct answer cell (green text, truncated to 60 chars) -->
                                 <td style="color:var(--success); font-size:13px; font-weight:500;">
                                     <%# Truncate(Eval("correct_text") as string, 60) %>
                                 </td>
+                                <!-- Points cell -->
                                 <td><%# Eval("points") %></td>
+                                <!-- Per-row action buttons: Edit, Delete -->
                                 <td style="text-align:right;">
                                     <a href='<%# "QuestionEdit.aspx?id=" + Eval("id") %>' class="btn btn-ghost btn-sm">Edit</a>
                                     <asp:LinkButton runat="server" Text="Delete"
@@ -64,6 +75,7 @@
                     </asp:Repeater>
                 </tbody>
             </table>
+            <!-- Empty state — shown only when this quiz has zero questions -->
             <asp:Panel ID="EmptyPanel" runat="server" Visible="false" style="padding:40px; text-align:center; color:var(--muted);">
                 No questions yet. Click <strong>+ New question</strong> to add an MCQ.
             </asp:Panel>

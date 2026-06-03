@@ -57,7 +57,7 @@ namespace CodexPy.Auth
                             return;
                         }
 
-                        // Success — store session
+                        // Success — stored into the session dict
                         Session["UserId"] = userId;
                         Session["UserName"] = name;
                         Session["UserEmail"] = email;

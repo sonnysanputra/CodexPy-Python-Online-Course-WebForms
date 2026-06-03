@@ -36,7 +36,7 @@ namespace CodexPy.Admin
             using (var cmd = new NpgsqlCommand(sql, conn))
             {
                 var result = cmd.ExecuteScalar();
-                return Convert.ToInt64(result).ToString("N0");
+                return Convert.ToInt64(result).ToString("N0"); //ToString NO, to add thousands seperators "1,000 not 1000"
             }
         }
 

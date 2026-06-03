@@ -41,9 +41,10 @@ namespace CodexPy.Auth
 
                     // Insert user
                     using (var insertCmd = new NpgsqlCommand(
-                        @"INSERT INTO users (name, email, password_hash, role, segment, status) 
-                          VALUES (@name, @email, @hash, 'Student', @segment, 'active') 
-                          RETURNING id", conn))
+                            @"INSERT INTO users (name, email, password_hash, role, segment, status, last_active_at) 
+                              VALUES (@name, @email, @hash, 'Student', @segment, 'active', CURRENT_TIMESTAMP) 
+                              RETURNING id", conn))
+
                     {
                         insertCmd.Parameters.AddWithValue("@name", name);
                         insertCmd.Parameters.AddWithValue("@email", email);
@@ -57,6 +58,8 @@ namespace CodexPy.Auth
                         Session["UserName"] = name;
                         Session["UserEmail"] = email;
                         Session["Role"] = "Student";
+
+
                     }
                 }
 

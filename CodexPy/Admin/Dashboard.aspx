@@ -7,7 +7,7 @@
 
     <div style="padding:28px 32px; overflow-y:auto;">
 
-        <!-- Header -->
+        <!-- ========== PAGE HEADER (eyebrow label + title + current date) ========== -->
         <div style="display:flex; justify-content:space-between; align-items:end; margin-bottom:22px;">
             <div>
                 <div class="eyebrow" style="margin-bottom:4px;">System overview</div>
@@ -18,9 +18,10 @@
             </div>
         </div>
 
-        <!-- KPI cards -->
+        <!-- ========== KPI CARDS (4-column grid of headline metrics) ========== -->
         <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:18px;">
 
+            <!-- KPI 1: Total registered learners -->
             <div class="card" style="padding:18px;">
                 <div style="font-size:12px; color:var(--muted); font-weight:500; margin-bottom:12px;">Total learners</div>
                 <div style="font-size:26px; font-weight:600; letter-spacing:-0.02em;">
@@ -29,6 +30,7 @@
                 <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">Registered accounts</div>
             </div>
 
+            <!-- KPI 2: Active learners in the last 7 days -->
             <div class="card" style="padding:18px;">
                 <div style="font-size:12px; color:var(--muted); font-weight:500; margin-bottom:12px;">Active this week</div>
                 <div style="font-size:26px; font-weight:600; letter-spacing:-0.02em;">
@@ -37,6 +39,7 @@
                 <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">Last 7 days</div>
             </div>
 
+            <!-- KPI 3: Total modules created -->
             <div class="card" style="padding:18px;">
                 <div style="font-size:12px; color:var(--muted); font-weight:500; margin-bottom:12px;">Total modules</div>
                 <div style="font-size:26px; font-weight:600; letter-spacing:-0.02em;">
@@ -45,6 +48,7 @@
                 <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">Published content</div>
             </div>
 
+            <!-- KPI 4: All-time quiz attempts -->
             <div class="card" style="padding:18px;">
                 <div style="font-size:12px; color:var(--muted); font-weight:500; margin-bottom:12px;">Quiz attempts</div>
                 <div style="font-size:26px; font-weight:600; letter-spacing:-0.02em;">
@@ -55,10 +59,10 @@
 
         </div>
 
-        <!-- Two-column section: Top modules + Recent users -->
+        <!-- ========== TWO-COLUMN SECTION (Modules list + Recent users feed) ========== -->
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
 
-            <!-- Top Modules -->
+            <!-- Left card: Modules list with difficulty tags -->
             <div class="card" style="padding:24px;">
                 <h3 class="h3" style="margin-bottom:14px;">Modules</h3>
                 <asp:Repeater ID="ModulesRepeater" runat="server">
@@ -76,7 +80,7 @@
                 </asp:Repeater>
             </div>
 
-            <!-- Recent Users -->
+            <!-- Right card: Recent registrations feed (with "view all" footer link) -->
             <div class="card" style="padding:24px;">
                 <h3 class="h3" style="margin-bottom:14px;">Recent registrations</h3>
                 <asp:Repeater ID="RecentUsersRepeater" runat="server">

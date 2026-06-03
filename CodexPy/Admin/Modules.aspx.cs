@@ -56,8 +56,8 @@ namespace CodexPy.Admin
                     });
                 }
             }
-            ModulesRepeater.DataSource = rows;
-            ModulesRepeater.DataBind();
+            ModulesRepeater.DataSource = rows; //Tells the ModulesRepeater where to get the data
+            ModulesRepeater.DataBind(); //Renders the data
             TotalLit.Text = rows.Count.ToString();
             EmptyPanel.Visible = rows.Count == 0;
         }

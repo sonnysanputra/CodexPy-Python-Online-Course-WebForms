@@ -6,20 +6,21 @@
 <asp:Content ContentPlaceHolderID="MainContent" runat="server">
     <div style="padding:28px 32px; overflow-y:auto;">
 
-        <!-- Header -->
+        <!-- ========== PAGE HEADER (mode label "Add/Edit" + user heading) ========== -->
         <div style="margin-bottom:22px;">
             <div class="eyebrow"><asp:Literal ID="ModeLit" runat="server" Text="Add user" /></div>
             <h1 class="h1" style="margin-top:4px;"><asp:Literal ID="HeadingLit" runat="server" Text="New user" /></h1>
         </div>
 
-        <!-- Error banner -->
+        <!-- ========== ERROR BANNER (shown if email is duplicate or save fails) ========== -->
         <asp:Panel ID="ErrorPanel" runat="server" Visible="false" style="margin-bottom:14px; padding:10px 14px; border-radius:10px; background:rgba(239,68,68,0.08); border:1px solid var(--error); color:var(--error); font-size:13.5px;">
             <asp:Literal ID="ErrorLit" runat="server" />
         </asp:Panel>
 
-        <!-- Form card -->
+        <!-- ========== FORM CARD (wraps all input fields + action buttons) ========== -->
         <div class="card" style="padding:32px; max-width:640px;">
 
+            <!-- Field: Full name (required) -->
             <div style="margin-bottom:14px;">
                 <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Full name</div>
                 <asp:TextBox ID="NameBox" runat="server" CssClass="input" />
@@ -27,6 +28,7 @@
                     CssClass="validation-error" ErrorMessage="Name is required" Display="Dynamic" />
             </div>
 
+            <!-- Field: Email (required + regex-format validators) -->
             <div style="margin-bottom:14px;">
                 <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Email</div>
                 <asp:TextBox ID="EmailBox" runat="server" CssClass="input" TextMode="Email" />
@@ -37,6 +39,7 @@
                     ErrorMessage="Enter a valid email address" Display="Dynamic" />
             </div>
 
+            <!-- Two-column row: Role / Segment dropdowns -->
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
                 <div>
                     <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Role</div>
@@ -55,6 +58,7 @@
                 </div>
             </div>
 
+            <!-- Field: Status dropdown (active / dormant / suspended) -->
             <div style="margin-bottom:14px;">
                 <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Status</div>
                 <asp:DropDownList ID="StatusList" runat="server" CssClass="input">
@@ -64,6 +68,7 @@
                 </asp:DropDownList>
             </div>
 
+            <!-- Field: Password (required for new users, optional for edits — toggled in code-behind) -->
             <div style="margin-bottom:14px;">
                 <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">
                     Password
@@ -77,7 +82,7 @@
                     ErrorMessage="Password must be at least 8 characters" Display="Dynamic" />
             </div>
 
-            <!-- Action buttons -->
+            <!-- ========== FORM ACTION BUTTONS (Cancel left, Save right) ========== -->
             <div style="display:flex; justify-content:space-between; margin-top:24px; padding-top:18px; border-top:1px solid var(--border);">
                 <a href="<%= ResolveUrl("~/Admin/Users.aspx") %>" class="btn btn-ghost">Cancel</a>
                 <asp:Button ID="SaveButton" runat="server" Text="Save user"

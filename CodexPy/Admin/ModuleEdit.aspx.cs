@@ -36,7 +36,7 @@ namespace CodexPy.Admin
         {
             using (var conn = DbHelper.GetConnection())
             using (var cmd = new NpgsqlCommand(
-                "SELECT title, blurb, difficulty, duration, color, icon, sort_order, published FROM modules WHERE id = @id", conn))
+                "SELECT title, blurb, difficulty, duration, color, sort_order, published FROM modules WHERE id = @id", conn))
             {
                 cmd.Parameters.AddWithValue("@id", id);
                 using (var reader = cmd.ExecuteReader())
@@ -52,9 +52,8 @@ namespace CodexPy.Admin
                     DifficultyList.SelectedValue = reader.GetString(2);
                     DurationBox.Text = reader.IsDBNull(3) ? "" : reader.GetString(3);
                     ColorBox.Text = reader.IsDBNull(4) ? "#3776AB" : reader.GetString(4);
-                    IconBox.Text = reader.IsDBNull(5) ? "book" : reader.GetString(5);
-                    SortOrderBox.Text = reader.GetInt32(6).ToString();
-                    PublishedBox.Checked = reader.GetBoolean(7);
+                    SortOrderBox.Text = reader.GetInt32(5).ToString();
+                    PublishedBox.Checked = reader.GetBoolean(6);
                     HeadingLit.Text = TitleBox.Text;
                 }
             }
@@ -69,7 +68,6 @@ namespace CodexPy.Admin
             string difficulty = DifficultyList.SelectedValue;
             string duration = DurationBox.Text.Trim();
             string color = ColorBox.Text.Trim();
-            string icon = IconBox.Text.Trim();
             int sortOrder = int.TryParse(SortOrderBox.Text, out int so) ? so : 0;
             bool published = PublishedBox.Checked;
 
@@ -77,13 +75,27 @@ namespace CodexPy.Admin
             {
                 using (var conn = DbHelper.GetConnection())
                 {
+                    // Check title uniqueness (excluding the current row when editing)
+                    using (var checkCmd = new NpgsqlCommand(
+                        "SELECT COUNT(*) FROM modules WHERE LOWER(title) = @title AND id != @currentId", conn))
+                    {
+                        checkCmd.Parameters.AddWithValue("@title", title.ToLowerInvariant());
+                        checkCmd.Parameters.AddWithValue("@currentId", ModuleId ?? -1);
+                        long count = (long)checkCmd.ExecuteScalar();
+                        if (count > 0)
+                        {
+                            ShowError("A module with this title already exists.");
+                            return;
+                        }
+                    }
+
                     if (ModuleId.HasValue)
                     {
                         // UPDATE
                         using (var cmd = new NpgsqlCommand(
                             @"UPDATE modules
                               SET title=@title, blurb=@blurb, difficulty=@difficulty, duration=@duration,
-                                  color=@color, icon=@icon, sort_order=@sort_order, published=@published,
+                                  color=@color, sort_order=@sort_order, published=@published,
                                   updated_at = CURRENT_TIMESTAMP
                               WHERE id = @id", conn))
                         {
@@ -92,7 +104,6 @@ namespace CodexPy.Admin
                             cmd.Parameters.AddWithValue("@difficulty", difficulty);
                             cmd.Parameters.AddWithValue("@duration", duration);
                             cmd.Parameters.AddWithValue("@color", color);
-                            cmd.Parameters.AddWithValue("@icon", icon);
                             cmd.Parameters.AddWithValue("@sort_order", sortOrder);
                             cmd.Parameters.AddWithValue("@published", published);
                             cmd.Parameters.AddWithValue("@id", ModuleId.Value);
@@ -103,15 +114,14 @@ namespace CodexPy.Admin
                     {
                         // INSERT
                         using (var cmd = new NpgsqlCommand(
-                            @"INSERT INTO modules (title, blurb, difficulty, duration, color, icon, sort_order, published)
-                              VALUES (@title, @blurb, @difficulty, @duration, @color, @icon, @sort_order, @published)", conn))
+                            @"INSERT INTO modules (title, blurb, difficulty, duration, color, sort_order, published)
+                              VALUES (@title, @blurb, @difficulty, @duration, @color, @sort_order, @published)", conn))
                         {
                             cmd.Parameters.AddWithValue("@title", title);
                             cmd.Parameters.AddWithValue("@blurb", blurb);
                             cmd.Parameters.AddWithValue("@difficulty", difficulty);
                             cmd.Parameters.AddWithValue("@duration", duration);
                             cmd.Parameters.AddWithValue("@color", color);
-                            cmd.Parameters.AddWithValue("@icon", icon);
                             cmd.Parameters.AddWithValue("@sort_order", sortOrder);
                             cmd.Parameters.AddWithValue("@published", published);
                             cmd.ExecuteNonQuery();
