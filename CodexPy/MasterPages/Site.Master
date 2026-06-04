@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head runat="server">
+    <meta charset="utf-8" />
     <title><asp:ContentPlaceHolder ID="TitlePH" runat="server">CodexPy</asp:ContentPlaceHolder></title>
     <link rel="stylesheet" href="<%= ResolveUrl("~/Content/site.css") %>" />
     <asp:ContentPlaceHolder ID="HeadExtra" runat="server" />

@@ -19,11 +19,24 @@ namespace CodexPy.Admin
             try
             {
                 using (var conn = DbHelper.GetConnection())
-                using (var cmd = new NpgsqlCommand("DELETE FROM quizzes WHERE id = @id", conn))
                 {
-                    cmd.Parameters.AddWithValue("@id", id);
-                    int rows = cmd.ExecuteNonQuery();
-                    ShowMessage(rows > 0 ? "Quiz deleted." : "Quiz not found.", rows > 0);
+                    // Grab the title BEFORE deleting so we can log it as an announcement
+                    string quizTitle = null;
+                    using (var titleCmd = new NpgsqlCommand("SELECT title FROM quizzes WHERE id = @id", conn))
+                    {
+                        titleCmd.Parameters.AddWithValue("@id", id);
+                        quizTitle = titleCmd.ExecuteScalar()?.ToString();
+                    }
+
+                    using (var cmd = new NpgsqlCommand("DELETE FROM quizzes WHERE id = @id", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        int rows = cmd.ExecuteNonQuery();
+                        ShowMessage(rows > 0 ? "Quiz deleted." : "Quiz not found.", rows > 0);
+
+                        if (rows > 0 && quizTitle != null)
+                            AnnouncementHelper.Log("removed", "quiz", quizTitle);
+                    }
                 }
             }
             catch (Exception ex)

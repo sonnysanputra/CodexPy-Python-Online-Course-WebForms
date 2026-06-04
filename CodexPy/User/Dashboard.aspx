@@ -100,5 +100,28 @@
 
         </div>
 
+        <!-- ========== ANNOUNCEMENTS CARD (recent platform activity feed) ========== -->
+        <div class="card" style="padding:24px; margin-top:16px;">
+            <h3 class="h3" style="margin-bottom:14px;">Recent announcements</h3>
+            <asp:Repeater ID="AnnouncementsRepeater" runat="server">
+                <ItemTemplate>
+                    <!-- One announcement row: icon + description + time ago -->
+                    <div style="display:flex; gap:14px; padding:10px 0; border-top:1px solid var(--hairline); align-items:start;">
+                        <div style="width:36px; height:36px; border-radius:8px; background:var(--bg-sunk); display:grid; place-items:center; font-size:16px; flex-shrink:0;">
+                            <%# Eval("icon") %>
+                        </div>
+                        <div style="flex:1;">
+                            <div style="font-size:13.5px; line-height:1.45;"><%# Eval("description") %></div>
+                            <div style="font-size:11.5px; color:var(--muted); margin-top:3px;"><%# Eval("when_label") %></div>
+                        </div>
+                    </div>
+                </ItemTemplate>
+            </asp:Repeater>
+            <!-- Empty state — shown if no announcements have been logged yet -->
+            <asp:Panel ID="EmptyAnnouncementsPanel" runat="server" Visible="false" style="padding:14px 0; text-align:center; color:var(--muted); font-size:13px;">
+                No recent platform activity.
+            </asp:Panel>
+        </div>
+
     </div>
 </asp:Content>

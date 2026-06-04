@@ -65,10 +65,8 @@
                             <span class="lesson-tts-label">Listen</span>
                         </button>
                     </div>
-                    <!-- Lesson body content (raw HTML/text from database) -->
-                    <div class="lesson-content" style="padding-left:46px; color:var(--ink-2); font-size:14.5px; line-height:1.7; white-space:pre-wrap;">
-                        <%# Eval("content") %>
-                    </div>
+                    <!-- Lesson body content (Eval on same line — pre-wrap preserves the markup indentation otherwise) -->
+                    <div class="lesson-content" style="padding-left:46px; color:var(--ink-2); font-size:14.5px; line-height:1.7; white-space:pre-wrap;"><%# Eval("content") %></div>
                 </div>
             </ItemTemplate>
         </asp:Repeater>
@@ -98,6 +96,80 @@
         <!-- Empty state — shown if no quizzes exist for this module -->
         <asp:Panel ID="EmptyQuizzesPanel" runat="server" Visible="false" class="card" style="padding:24px; text-align:center; color:var(--muted); font-size:13.5px;">
             No quizzes available for this module yet.
+        </asp:Panel>
+
+        <!-- ========== DISCUSSION SECTION (forum for this module — comments + admin replies) ========== -->
+        <h2 class="h2" style="margin-top:32px; margin-bottom:14px;">
+            Discussion <span style="color:var(--muted); font-weight:400; font-size:16px;">(<asp:Literal ID="CommentCountLit" runat="server" Text="0" />)</span>
+        </h2>
+
+        <!-- New comment form (only visible to logged-in students) -->
+        <div class="card" style="padding:20px; margin-bottom:14px;">
+            <div style="font-size:12px; color:var(--muted); margin-bottom:6px; font-weight:500;">Share your thoughts on this module</div>
+            <asp:TextBox ID="NewCommentBox" runat="server" CssClass="input" TextMode="MultiLine" Rows="3"
+                placeholder="What worked, what didn't, suggestions for the lessons or quizzes..." />
+            <asp:RequiredFieldValidator ID="NewCommentReq" runat="server" ControlToValidate="NewCommentBox"
+                ValidationGroup="PostComment" CssClass="validation-error"
+                ErrorMessage="Please write something before posting" Display="Dynamic" />
+            <div style="display:flex; justify-content:flex-end; margin-top:10px;">
+                <asp:Button ID="PostCommentButton" runat="server" Text="Post comment"
+                    CssClass="btn btn-yellow" ValidationGroup="PostComment" OnClick="PostCommentButton_Click" />
+            </div>
+        </div>
+
+        <!-- Status banner for comment-posting feedback -->
+        <asp:Panel ID="CommentMessagePanel" runat="server" Visible="false"
+            style="margin-bottom:14px; padding:10px 14px; border-radius:10px; background:rgba(16,185,129,0.1); border:1px solid var(--success); color:#065F46; font-size:13.5px;">
+            <asp:Literal ID="CommentMessageLit" runat="server" />
+        </asp:Panel>
+
+        <!-- Comments list — one card per top-level comment with admin replies nested -->
+        <asp:Repeater ID="CommentsRepeater" runat="server">
+            <ItemTemplate>
+                <div class="card" style="padding:18px; margin-bottom:10px;">
+                    <!-- One flex row: avatar (fixed-width) + content column (flex:1) -->
+                    <div style="display:flex; gap:12px; align-items:flex-start; text-align:left;">
+
+                        <!-- Avatar -->
+                        <div class="avatar" style="width:36px; height:36px; flex-shrink:0; font-size:12px;">
+                            <%# Eval("Initials") %>
+                        </div>
+
+                        <!-- Content column: identity, body, replies all stack vertically aligned to the right of the avatar -->
+                        <div style="flex:1; min-width:0; text-align:left;">
+                            <!-- Identity row: name + segment + email + timestamp -->
+                            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:4px;">
+                                <strong style="font-size:14px;"><%# Eval("Name") %></strong>
+                                <span class="tag" style="font-size:11px;"><%# Eval("Segment") %></span>
+                                <span style="font-size:12px; color:var(--muted);"><%# Eval("Email") %></span>
+                                <span style="font-size:11.5px; color:var(--muted);">&middot; <%# Eval("WhenLabel") %></span>
+                            </div>
+
+                            <!-- Comment body (Eval on same line — pre-wrap would render markup whitespace as visible space) -->
+                            <div style="font-size:14px; line-height:1.5; white-space:pre-wrap; margin-top:8px;"><%# Eval("Body") %></div>
+
+                            <!-- Admin replies nested -->
+                            <asp:Repeater runat="server" DataSource='<%# Eval("Replies") %>'>
+                                <ItemTemplate>
+                                    <div style="margin-top:12px; padding:14px; background:var(--bg-sunk); border-radius:8px;">
+                                        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:4px;">
+                                            <strong style="font-size:13.5px;"><%# Eval("Name") %></strong>
+                                            <span class="tag adv" style="font-size:11px;">Admin</span>
+                                            <span style="font-size:11.5px; color:var(--muted);">&middot; <%# Eval("WhenLabel") %></span>
+                                        </div>
+                                        <div style="font-size:13.5px; line-height:1.5; white-space:pre-wrap;"><%# Eval("Body") %></div>
+                                    </div>
+                                </ItemTemplate>
+                            </asp:Repeater>
+                        </div>
+                    </div>
+                </div>
+            </ItemTemplate>
+        </asp:Repeater>
+
+        <!-- Empty state when this module has no comments yet -->
+        <asp:Panel ID="EmptyCommentsPanel" runat="server" Visible="false" class="card" style="padding:24px; text-align:center; color:var(--muted); font-size:13.5px;">
+            No comments yet. Be the first to share your thoughts!
         </asp:Panel>
 
     </div>

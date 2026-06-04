@@ -131,7 +131,9 @@ namespace CodexPy.Admin
         {
             if (dateValue == null || dateValue == DBNull.Value) return "Never";
             DateTime dt = (DateTime)dateValue;
-            var span = DateTime.Now - dt;
+            // PostgreSQL CURRENT_TIMESTAMP stores UTC; compare against UtcNow so a recent
+            // sign-up doesn't show as "8h ago" because of the local timezone offset.
+            var span = DateTime.UtcNow - dt;
             if (span.TotalMinutes < 1) return "just now";
             if (span.TotalHours < 1) return Math.Floor(span.TotalMinutes) + "m ago";
             if (span.TotalDays < 1) return Math.Floor(span.TotalHours) + "h ago";

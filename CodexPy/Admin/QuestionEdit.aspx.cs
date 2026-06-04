@@ -149,6 +149,17 @@ namespace CodexPy.Admin
             {
                 using (var conn = DbHelper.GetConnection())
                 {
+                    // Fetch parent quiz title for the announcement
+                    string quizTitle = null;
+                    using (var titleCmd = new NpgsqlCommand("SELECT title FROM quizzes WHERE id = @id", conn))
+                    {
+                        titleCmd.Parameters.AddWithValue("@id", quizId);
+                        quizTitle = titleCmd.ExecuteScalar()?.ToString();
+                    }
+
+                    // Question prompts can be very long; trim for the announcement label
+                    string shortPrompt = prompt.Length > 80 ? prompt.Substring(0, 80) + "…" : prompt;
+
                     if (QuestionId.HasValue)
                     {
                         using (var cmd = new NpgsqlCommand(
@@ -167,6 +178,7 @@ namespace CodexPy.Admin
                             cmd.Parameters.AddWithValue("@id", QuestionId.Value);
                             cmd.ExecuteNonQuery();
                         }
+                        AnnouncementHelper.Log("updated", "question", shortPrompt, quizTitle);
                     }
                     else
                     {
@@ -183,6 +195,7 @@ namespace CodexPy.Admin
                             cmd.Parameters.AddWithValue("@sort_order", sortOrder);
                             cmd.ExecuteNonQuery();
                         }
+                        AnnouncementHelper.Log("added", "question", shortPrompt, quizTitle);
                     }
                 }
 

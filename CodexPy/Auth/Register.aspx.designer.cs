@@ -33,6 +33,15 @@
         protected global::System.Web.UI.WebControls.TextBox NameBox;
 
         /// <summary>
+        /// NameReq control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator NameReq;
+
+        /// <summary>
         /// EmailBox control.
         /// </summary>
         /// <remarks>
@@ -40,6 +49,24 @@
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox EmailBox;
+
+        /// <summary>
+        /// RegEmailReq control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RegEmailReq;
+
+        /// <summary>
+        /// RegEmailFormat control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegEmailFormat;
 
         /// <summary>
         /// PasswordBox control.
@@ -51,6 +78,24 @@
         protected global::System.Web.UI.WebControls.TextBox PasswordBox;
 
         /// <summary>
+        /// RegPasswordReq control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RegPasswordReq;
+
+        /// <summary>
+        /// RegPasswordFormat control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegPasswordFormat;
+
+        /// <summary>
         /// ConfirmBox control.
         /// </summary>
         /// <remarks>
@@ -58,6 +103,24 @@
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox ConfirmBox;
+
+        /// <summary>
+        /// RegConfirmReq control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RegConfirmReq;
+
+        /// <summary>
+        /// RegConfirmCompare control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CompareValidator RegConfirmCompare;
 
         /// <summary>
         /// SegmentList control.

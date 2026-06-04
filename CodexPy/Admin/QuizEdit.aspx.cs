@@ -108,6 +108,7 @@ namespace CodexPy.Admin
                             cmd.Parameters.AddWithValue("@id", QuizId.Value);
                             cmd.ExecuteNonQuery();
                         }
+                        AnnouncementHelper.Log("updated", "quiz", title);
                     }
                     else
                     {
@@ -121,6 +122,7 @@ namespace CodexPy.Admin
                             cmd.Parameters.AddWithValue("@time_limit", timeLimitSeconds);
                             cmd.ExecuteNonQuery();
                         }
+                        AnnouncementHelper.Log("added", "quiz", title);
                     }
                 }
 

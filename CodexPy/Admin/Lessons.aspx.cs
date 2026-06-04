@@ -40,11 +40,34 @@ namespace CodexPy.Admin
             try
             {
                 using (var conn = DbHelper.GetConnection())
-                using (var cmd = new NpgsqlCommand("DELETE FROM lessons WHERE id = @id", conn))
                 {
-                    cmd.Parameters.AddWithValue("@id", id);
-                    int rows = cmd.ExecuteNonQuery();
-                    ShowMessage(rows > 0 ? "Lesson deleted." : "Lesson not found.", rows > 0);
+                    // Grab lesson title + parent module title BEFORE deleting so we can log it
+                    string lessonTitle = null, moduleTitle = null;
+                    using (var titleCmd = new NpgsqlCommand(
+                        @"SELECT l.title, m.title
+                          FROM lessons l JOIN modules m ON l.module_id = m.id
+                          WHERE l.id = @id", conn))
+                    {
+                        titleCmd.Parameters.AddWithValue("@id", id);
+                        using (var reader = titleCmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                lessonTitle = reader.GetString(0);
+                                moduleTitle = reader.GetString(1);
+                            }
+                        }
+                    }
+
+                    using (var cmd = new NpgsqlCommand("DELETE FROM lessons WHERE id = @id", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        int rows = cmd.ExecuteNonQuery();
+                        ShowMessage(rows > 0 ? "Lesson deleted." : "Lesson not found.", rows > 0);
+
+                        if (rows > 0 && lessonTitle != null)
+                            AnnouncementHelper.Log("removed", "lesson", lessonTitle, moduleTitle);
+                    }
                 }
             }
             catch (Exception ex)

@@ -80,7 +80,12 @@
                 </div>
                 <div>
                     <div style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500;">Sort order</div>
-                    <asp:TextBox ID="SortOrderBox" runat="server" CssClass="input" TextMode="Number" Text="0" />
+                    <asp:TextBox ID="SortOrderBox" runat="server" CssClass="input" TextMode="Number" Text="1" min="1" />
+                    <asp:RequiredFieldValidator runat="server" ControlToValidate="SortOrderBox"
+                        CssClass="validation-error" ErrorMessage="Sort order is required" Display="Dynamic" />
+                    <asp:RangeValidator runat="server" ControlToValidate="SortOrderBox"
+                        Type="Integer" MinimumValue="1" MaximumValue="9999"
+                        CssClass="validation-error" ErrorMessage="Sort order must be 1 or higher" Display="Dynamic" />
                 </div>
             </div>
 

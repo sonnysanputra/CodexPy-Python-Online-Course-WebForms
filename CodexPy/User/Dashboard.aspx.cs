@@ -31,6 +31,7 @@ namespace CodexPy.User
                 LoadKpis(userId);
                 LoadContinueModule(userId);
                 LoadRecentScores(userId);
+                LoadAnnouncements();
             }
         }
 
@@ -138,12 +139,96 @@ namespace CodexPy.User
         {
             if (dateValue == null) return "";
             DateTime dt = (DateTime)dateValue;
-            var span = DateTime.Now - dt;
+            // PostgreSQL CURRENT_TIMESTAMP stores UTC; compare against UtcNow so the timezone
+            // offset isn't double-counted (otherwise a fresh quiz attempt would show as "8h ago").
+            var span = DateTime.UtcNow - dt;
             if (span.TotalMinutes < 1) return "just now";
             if (span.TotalHours < 1) return Math.Floor(span.TotalMinutes) + "m ago";
             if (span.TotalDays < 1) return Math.Floor(span.TotalHours) + "h ago";
             if (span.TotalDays < 30) return Math.Floor(span.TotalDays) + "d ago";
             return dt.ToString("MMM d");
+        }
+
+        // Pulls the 10 most recent announcements and turns each into a row the Repeater
+        // can render (icon + human-readable description + "X ago" label).
+        private void LoadAnnouncements()
+        {
+            var rows = new List<dynamic>();
+            using (var conn = DbHelper.GetConnection())
+            using (var cmd = new NpgsqlCommand(
+                @"SELECT action, target_type, target_name, parent_name, created_at
+                  FROM announcements
+                  ORDER BY created_at DESC
+                  LIMIT 10", conn))
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    string action = reader.GetString(0);
+                    string targetType = reader.GetString(1);
+                    string targetName = reader.GetString(2);
+                    string parentName = reader.IsDBNull(3) ? null : reader.GetString(3);
+                    DateTime createdAt = reader.GetDateTime(4);
+
+                    rows.Add(new
+                    {
+                        icon = GetAnnouncementIcon(targetType),
+                        description = BuildAnnouncementText(action, targetType, targetName, parentName),
+                        when_label = FormatDate(createdAt)
+                    });
+                }
+            }
+            AnnouncementsRepeater.DataSource = rows;
+            AnnouncementsRepeater.DataBind();
+            EmptyAnnouncementsPanel.Visible = rows.Count == 0;
+        }
+
+        // Maps the target type to a small emoji so each row has a quick visual cue
+        private string GetAnnouncementIcon(string targetType)
+        {
+            switch (targetType)
+            {
+                case "module":   return "📘";
+                case "lesson":   return "📖";
+                case "quiz":     return "📝";
+                case "question": return "❓";
+                default:         return "📌";
+            }
+        }
+
+        // Builds a human-readable sentence for each announcement row, e.g.
+        // "New lesson added in Lists & Dictionaries: List comprehensions"
+        private string BuildAnnouncementText(string action, string targetType, string targetName, string parentName)
+        {
+            switch (targetType)
+            {
+                case "module":
+                    if (action == "added")   return "New module added: " + targetName;
+                    if (action == "updated") return "Module updated: " + targetName;
+                    return "Module removed: " + targetName;
+
+                case "lesson":
+                    string inModule = parentName != null ? " in " + parentName : "";
+                    string fromModule = parentName != null ? " from " + parentName : "";
+                    if (action == "added")   return "New lesson added" + inModule + ": " + targetName;
+                    if (action == "updated") return "Lesson updated" + inModule + ": " + targetName;
+                    return "Lesson removed" + fromModule + ": " + targetName;
+
+                case "quiz":
+                    if (action == "added")   return "New quiz added: " + targetName;
+                    if (action == "updated") return "Quiz updated: " + targetName;
+                    return "Quiz removed: " + targetName;
+
+                case "question":
+                    string inQuiz = parentName != null ? " in " + parentName : "";
+                    string fromQuiz = parentName != null ? " from " + parentName : "";
+                    if (action == "added")   return "New question added" + inQuiz;
+                    if (action == "updated") return "Question updated" + inQuiz;
+                    return "Question removed" + fromQuiz;
+
+                default:
+                    return targetType + " " + action + ": " + targetName;
+            }
         }
     }
 }

@@ -150,7 +150,9 @@ namespace CodexPy.User
 
         private string FormatAgo(DateTime dt)
         {
-            var span = DateTime.Now - dt;
+            // PostgreSQL CURRENT_TIMESTAMP stores UTC; Npgsql returns it with Kind=Unspecified.
+            // Compare against UtcNow so the offset isn't double-applied with the local timezone.
+            var span = DateTime.UtcNow - dt;
             if (span.TotalMinutes < 1) return "just now";
             if (span.TotalHours < 1) return Math.Floor(span.TotalMinutes) + "m ago";
             if (span.TotalDays < 1) return Math.Floor(span.TotalHours) + "h ago";

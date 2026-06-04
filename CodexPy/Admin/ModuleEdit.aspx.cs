@@ -109,6 +109,7 @@ namespace CodexPy.Admin
                             cmd.Parameters.AddWithValue("@id", ModuleId.Value);
                             cmd.ExecuteNonQuery();
                         }
+                        AnnouncementHelper.Log("updated", "module", title);
                     }
                     else
                     {
@@ -126,6 +127,7 @@ namespace CodexPy.Admin
                             cmd.Parameters.AddWithValue("@published", published);
                             cmd.ExecuteNonQuery();
                         }
+                        AnnouncementHelper.Log("added", "module", title);
                     }
                 }
 

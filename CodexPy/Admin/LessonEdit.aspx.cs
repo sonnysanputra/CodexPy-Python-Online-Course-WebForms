@@ -95,6 +95,14 @@ namespace CodexPy.Admin
             {
                 using (var conn = DbHelper.GetConnection())
                 {
+                    // Fetch the parent module title so the announcement reads naturally
+                    string moduleTitle = null;
+                    using (var titleCmd = new NpgsqlCommand("SELECT title FROM modules WHERE id = @id", conn))
+                    {
+                        titleCmd.Parameters.AddWithValue("@id", moduleId);
+                        moduleTitle = titleCmd.ExecuteScalar()?.ToString();
+                    }
+
                     if (LessonId.HasValue)
                     {
                         using (var cmd = new NpgsqlCommand(
@@ -106,6 +114,7 @@ namespace CodexPy.Admin
                             cmd.Parameters.AddWithValue("@id", LessonId.Value);
                             cmd.ExecuteNonQuery();
                         }
+                        AnnouncementHelper.Log("updated", "lesson", title, moduleTitle);
                     }
                     else
                     {
@@ -119,6 +128,7 @@ namespace CodexPy.Admin
                             cmd.Parameters.AddWithValue("@sort_order", sortOrder);
                             cmd.ExecuteNonQuery();
                         }
+                        AnnouncementHelper.Log("added", "lesson", title, moduleTitle);
                     }
                 }
 

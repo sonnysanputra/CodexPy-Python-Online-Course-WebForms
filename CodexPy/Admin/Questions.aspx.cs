@@ -41,11 +41,35 @@ namespace CodexPy.Admin
             try
             {
                 using (var conn = DbHelper.GetConnection())
-                using (var cmd = new NpgsqlCommand("DELETE FROM questions WHERE id = @id", conn))
                 {
-                    cmd.Parameters.AddWithValue("@id", id);
-                    int rows = cmd.ExecuteNonQuery();
-                    ShowMessage(rows > 0 ? "Question deleted." : "Question not found.", rows > 0);
+                    // Grab the prompt + parent quiz title BEFORE deleting so we can log it
+                    string shortPrompt = null, quizTitle = null;
+                    using (var titleCmd = new NpgsqlCommand(
+                        @"SELECT q.prompt, qz.title
+                          FROM questions q JOIN quizzes qz ON q.quiz_id = qz.id
+                          WHERE q.id = @id", conn))
+                    {
+                        titleCmd.Parameters.AddWithValue("@id", id);
+                        using (var reader = titleCmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                string p = reader.GetString(0);
+                                shortPrompt = p.Length > 80 ? p.Substring(0, 80) + "…" : p;
+                                quizTitle = reader.GetString(1);
+                            }
+                        }
+                    }
+
+                    using (var cmd = new NpgsqlCommand("DELETE FROM questions WHERE id = @id", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        int rows = cmd.ExecuteNonQuery();
+                        ShowMessage(rows > 0 ? "Question deleted." : "Question not found.", rows > 0);
+
+                        if (rows > 0 && shortPrompt != null)
+                            AnnouncementHelper.Log("removed", "question", shortPrompt, quizTitle);
+                    }
                 }
             }
             catch (Exception ex)

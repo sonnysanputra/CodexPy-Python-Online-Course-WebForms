@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Dashboard.aspx" />
+    <Content Include="Admin\Forum.aspx" />
     <Content Include="Admin\Lessons.aspx" />
     <Content Include="Admin\LessonEdit.aspx" />
     <Content Include="Admin\ModuleEdit.aspx" />
@@ -158,6 +159,13 @@
     </Compile>
     <Compile Include="Admin\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Forum.aspx.cs">
+      <DependentUpon>Forum.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Forum.aspx.designer.cs">
+      <DependentUpon>Forum.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\Lessons.aspx.cs">
       <DependentUpon>Lessons.aspx</DependentUpon>
@@ -264,6 +272,7 @@
     <Compile Include="Auth\Register.aspx.designer.cs">
       <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Data\AnnouncementHelper.cs" />
     <Compile Include="Data\DbHelper.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
