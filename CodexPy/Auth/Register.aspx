@@ -64,11 +64,14 @@
                     ErrorMessage="Password must be at least 8 characters" Display="Dynamic" />
             </div>
 
-            <!-- Field: Confirm password (CompareValidator checks it matches PasswordBox) -->
+            <!-- Field: Confirm password (RequiredFieldValidator + CompareValidator) -->
             <div style="margin-bottom:14px;">
                 <label for="ConfirmBox" style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500; display:block;">Confirm password</label>
                 <asp:TextBox ID="ConfirmBox" runat="server" CssClass="input" TextMode="Password"
-                    MaxLength="128" ClientIDMode="Static" aria-describedby="RegConfirmCompare" />
+                    MaxLength="128" ClientIDMode="Static" aria-required="true" aria-describedby="RegConfirmReq RegConfirmCompare" />
+                <asp:RequiredFieldValidator ID="RegConfirmReq" runat="server" ClientIDMode="Static"
+                    ControlToValidate="ConfirmBox"
+                    CssClass="validation-error" ErrorMessage="Confirm password is required" Display="Dynamic" />
                 <asp:CompareValidator ID="RegConfirmCompare" runat="server" ClientIDMode="Static"
                     ControlToValidate="ConfirmBox"
                     ControlToCompare="PasswordBox" CssClass="validation-error"

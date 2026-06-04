@@ -36,7 +36,7 @@ namespace CodexPy.Auth
                         }
                     }
 
-                    // Hash password
+                    // Hash password,BCrypt is will transform the password to inc security
                     string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
 
                     // Insert user

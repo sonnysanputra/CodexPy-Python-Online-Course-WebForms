@@ -58,6 +58,19 @@ namespace CodexPy.Admin
             string email = EmailBox.Text.Trim().ToLowerInvariant();
             string segment = SegmentList.SelectedValue;
             string newPassword = NewPasswordBox.Text;
+            string confirmPassword = ConfirmPasswordBox.Text;
+
+            // If the admin is changing their password, both fields must be filled
+            if (!string.IsNullOrEmpty(newPassword) && string.IsNullOrEmpty(confirmPassword))
+            {
+                ShowError("Please confirm your new password.");
+                return;
+            }
+            if (string.IsNullOrEmpty(newPassword) && !string.IsNullOrEmpty(confirmPassword))
+            {
+                ShowError("Please enter your new password before confirming it.");
+                return;
+            }
 
             try
             {
