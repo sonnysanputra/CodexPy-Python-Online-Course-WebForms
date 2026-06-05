@@ -534,8 +534,108 @@ INSERT INTO questions (quiz_id, prompt, kind, options_json, correct_answer, expl
  1, 'Animal is the parent class. Dog inherits all of Animal attributes and methods.', 10, 4);
 
 -- ===================================================================
+-- SAMPLE STUDENT USERS — for testing the forum and announcement feed
+-- All four share password "test123" (BCrypt-hashed below).
+-- ON CONFLICT (email) DO NOTHING means re-running the script is safe.
+-- ===================================================================
+INSERT INTO users (name, email, password_hash, role, segment, status, last_active_at) VALUES
+    ('Maria Lopez',  'maria@testing.com',  '$2a$11$pPyGg4tkt5wsiCAOpZy8Du.MH46yWY43tCiIFY4unfVyYEfvTlFRi', 'Student', 'University',   'active', NOW()),
+    ('Aaron Chen',   'aaron@testing.com',  '$2a$11$pPyGg4tkt5wsiCAOpZy8Du.MH46yWY43tCiIFY4unfVyYEfvTlFRi', 'Student', 'School',       'active', NOW()),
+    ('Priya Singh',  'priya@testing.com',  '$2a$11$pPyGg4tkt5wsiCAOpZy8Du.MH46yWY43tCiIFY4unfVyYEfvTlFRi', 'Student', 'Self-learner', 'active', NOW()),
+    ('Daniel Wong',  'daniel@testing.com', '$2a$11$pPyGg4tkt5wsiCAOpZy8Du.MH46yWY43tCiIFY4unfVyYEfvTlFRi', 'Student', 'University',   'active', NOW())
+ON CONFLICT (email) DO NOTHING;
+
+
+-- ===================================================================
+-- ANNOUNCEMENTS — 10 sample platform-activity entries
+-- Populates the "Recent announcements" card on the User Dashboard.
+-- ===================================================================
+INSERT INTO announcements (action, target_type, target_name, parent_name, created_at) VALUES
+    ('added',   'module',   'Decorators & Generators',           NULL,                       NOW() - INTERVAL '30 seconds'),
+    ('added',   'lesson',   'List slicing tricks',               'Lists & Dictionaries',     NOW() - INTERVAL '5 minutes'),
+    ('updated', 'quiz',     'Loops Checkpoint',                  NULL,                       NOW() - INTERVAL '25 minutes'),
+    ('added',   'question', 'What does range(5) produce?',       'Loops Checkpoint',         NOW() - INTERVAL '1 hour'),
+    ('updated', 'lesson',   'For loops in Python',               'Loops & Iteration',        NOW() - INTERVAL '3 hours'),
+    ('updated', 'module',   'Functions',                         NULL,                       NOW() - INTERVAL '6 hours'),
+    ('added',   'quiz',     'Variables Checkpoint',              NULL,                       NOW() - INTERVAL '1 day'),
+    ('removed', 'lesson',   'Outdated syntax notes',             'Control Flow',             NOW() - INTERVAL '2 days'),
+    ('removed', 'question', 'Deprecated Python 2 question',      'Variables Checkpoint',     NOW() - INTERVAL '3 days'),
+    ('added',   'module',   'OOP Basics',                        NULL,                       NOW() - INTERVAL '5 days');
+
+
+-- ===================================================================
+-- FORUM COMMENTS — 8 top-level student comments + 3 admin replies
+-- Uses email/title subqueries so the script works regardless of which
+-- numeric IDs landed in users / modules / comments.
+-- ===================================================================
+
+-- Top-level student comments (parent_comment_id IS NULL)
+INSERT INTO comments (user_id, module_id, body, is_read, created_at)
+SELECT u.id, m.id, c.body, c.is_read, c.created_at
+FROM (VALUES
+    ('kenneth@testing.com', 'Lists & Dictionaries',     'Very nice module! The list slicing examples were super clear.',                              FALSE, NOW() - INTERVAL '5 minutes'),
+    ('maria@testing.com',   'Lists & Dictionaries',     'Could you add more examples on dictionary comprehensions? Found those a bit tricky.',         FALSE, NOW() - INTERVAL '40 minutes'),
+    ('aaron@testing.com',   'Variables and Data Types', 'Perfect for absolute beginners. I''m a school student and I understood everything!',          TRUE,  NOW() - INTERVAL '2 hours'),
+    ('priya@testing.com',   'Loops & Iteration',        'The for-loop section was tough at first but it clicked after the third example. Thanks!',    TRUE,  NOW() - INTERVAL '4 hours'),
+    ('daniel@testing.com',  'Functions',                'Found a typo: ''fucntion'' instead of ''function'' in lesson 2.',                             TRUE,  NOW() - INTERVAL '8 hours'),
+    ('maria@testing.com',   'OOP Basics',               'The OOP module is amazing but feels a bit fast. Could use more practice exercises.',          FALSE, NOW() - INTERVAL '1 day'),
+    ('kenneth@testing.com', 'Control Flow',             'Loved how if/elif/else was explained with real-world examples.',                              TRUE,  NOW() - INTERVAL '2 days'),
+    ('aaron@testing.com',   'Functions',                'Default arguments and *args confused me. Could you add a flow diagram?',                      FALSE, NOW() - INTERVAL '3 days')
+) AS c(email, module_title, body, is_read, created_at)
+JOIN users u   ON LOWER(u.email) = LOWER(c.email)
+JOIN modules m ON m.title = c.module_title;
+
+-- Admin replies — link to their parent by matching the comment body.
+-- Replace 'sonny@testing.com' with whatever your admin email is if different.
+INSERT INTO comments (user_id, module_id, parent_comment_id, body, is_read, created_at)
+SELECT
+    (SELECT id FROM users WHERE LOWER(email) = LOWER('sonny@testing.com')),
+    parent.module_id,
+    parent.id,
+    'Great suggestion! Added a new section on dictionary comprehensions — refresh the module to see the updates.',
+    TRUE,
+    NOW() - INTERVAL '30 minutes'
+FROM comments parent
+WHERE parent.body LIKE 'Could you add more examples on dictionary comprehensions%'
+  AND parent.parent_comment_id IS NULL;
+
+INSERT INTO comments (user_id, module_id, parent_comment_id, body, is_read, created_at)
+SELECT
+    (SELECT id FROM users WHERE LOWER(email) = LOWER('sonny@testing.com')),
+    parent.module_id,
+    parent.id,
+    'Fixed! Thanks for catching that :)',
+    TRUE,
+    NOW() - INTERVAL '7 hours'
+FROM comments parent
+WHERE parent.body LIKE 'Found a typo%'
+  AND parent.parent_comment_id IS NULL;
+
+INSERT INTO comments (user_id, module_id, parent_comment_id, body, is_read, created_at)
+SELECT
+    (SELECT id FROM users WHERE LOWER(email) = LOWER('sonny@testing.com')),
+    parent.module_id,
+    parent.id,
+    'Thanks for the feedback. We''re adding more exercises next week — stay tuned!',
+    TRUE,
+    NOW() - INTERVAL '20 hours'
+FROM comments parent
+WHERE parent.body LIKE 'The OOP module is amazing%'
+  AND parent.parent_comment_id IS NULL;
+
+-- Mark the parent comments that received a reply as read
+-- (matches the runtime behavior in Admin/Forum.aspx.cs)
+UPDATE comments
+SET is_read = TRUE
+WHERE id IN (SELECT parent_comment_id FROM comments WHERE parent_comment_id IS NOT NULL);
+
+
+-- ===================================================================
 -- Done! You should now have:
 --   18 lessons (3 per module x 6 modules)
 --   6 quizzes (1 per module)
 --   24 questions (4 per quiz x 6 quizzes)
+--   4 sample student users (Maria, Aaron, Priya, Daniel — password "test123")
+--   10 announcements (covers all action / target_type combinations)
+--   8 top-level forum comments + 3 admin replies
 -- ===================================================================

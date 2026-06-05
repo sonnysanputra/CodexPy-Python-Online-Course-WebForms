@@ -50,7 +50,7 @@ namespace CodexPy.User
                 LoadLessons();
                 LoadQuizzes();
                 LoadComments();
-                TrackVisit(); // mark user has at least started this module
+                TrackVisit(); 
             }
         }
 

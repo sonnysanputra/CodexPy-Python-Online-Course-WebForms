@@ -11,22 +11,22 @@
         <!-- ========== LEFT COLUMN — SIGN-IN FORM ========== -->
         <div style="padding:48px 56px; display:flex; flex-direction:column; justify-content:center; max-width:480px; margin:0 auto; width:100%;">
 
-            <!-- Brand logo (top-left of the form column) -->
+            <!-- 1. Brand logo (top-left of the form column) -->
             <div style="margin-bottom:40px; display:flex; align-items:center; gap:10px; font-weight:600; font-size:17px;">
                 <span style="width:28px; height:28px; border-radius:7px; background:var(--ink); color:var(--py-yellow); display:grid; place-items:center; font-family:var(--font-mono); font-weight:700; font-size:14px;">&lt;/</span>
                 Codex<span class="py" style="font-family:var(--font-mono); background:var(--py-yellow); color:var(--py-blue-d); padding:1px 6px; border-radius:5px;">Py</span>
             </div>
 
-            <!-- Page heading + tagline -->
+            <!-- 2. Page heading + tagline -->
             <h1 class="h1">Welcome back.</h1>
             <p style="font-size:15px; color:var(--muted); margin-top:10px; margin-bottom:32px;">Pick up where the snake left off.</p>
 
-            <!-- Error banner (shown if credentials are wrong or account is locked) -->
+            <!-- 3. Error banner (shown if credentials are wrong or account is locked) -->
             <asp:Panel ID="ErrorPanel" runat="server" Visible="false" CssClass="validation-error" style="margin-bottom:14px; padding:10px 12px; background:rgba(239,68,68,0.08); border:1px solid var(--error); border-radius:10px;">
                 <asp:Literal ID="ErrorMessage" runat="server" />
             </asp:Panel>
 
-            <!-- Field: Email (required + regex-format validators) -->
+            <!-- 4. Field: Email (required + regex-format validators) -->
             <div style="margin-bottom:14px;">
                 <label for="EmailBox" style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500; display:block;">Email</label>
                 <asp:TextBox ID="EmailBox" runat="server" CssClass="input" TextMode="Email"
@@ -40,7 +40,7 @@
                     ErrorMessage="Enter a valid email address" Display="Dynamic" />
             </div>
 
-            <!-- Field: Password (masked, required validator) -->
+            <!-- 5. Field: Password (masked, required validator) -->
             <div style="margin-bottom:14px;">
                 <label for="PasswordBox" style="font-size:12px; color:var(--muted); margin-bottom:5px; font-weight:500; display:block;">Password</label>
                 <asp:TextBox ID="PasswordBox" runat="server" CssClass="input" TextMode="Password"
@@ -50,13 +50,13 @@
                     ErrorMessage="Password is required" Display="Dynamic" />
             </div>
 
-            <!-- Submit button (triggers SignInButton_Click in code-behind) -->
+            <!-- 6. Submit button (triggers SignInButton_Click in code-behind) -->
             <asp:Button ID="SignInButton" runat="server" Text="Sign in"
                 CssClass="btn btn-yellow btn-lg"
                 style="margin-top:18px; justify-content:center; width:100%;"
                 OnClick="SignInButton_Click" />
 
-            <!-- Footer link to Register page -->
+            <!-- 7. Footer link to Register page -->
             <p style="font-size:13px; color:var(--muted); margin-top:24px; text-align:center;">
                 New to CodexPy? <a href="<%= ResolveUrl("~/Auth/Register.aspx") %>" style="color:var(--py-blue);">Create an account</a>
             </p>

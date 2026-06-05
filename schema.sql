@@ -4,7 +4,10 @@
 -- Run this once in the Supabase SQL Editor for a fresh project.
 -- ===================================================================
 
--- Drop tables if re-running (safe for development only)
+-- Drop tables if re-running (safe for development only).
+-- Order: most-dependent first so CASCADE doesn't have to do the work.
+DROP TABLE IF EXISTS comments CASCADE;
+DROP TABLE IF EXISTS announcements CASCADE;
 DROP TABLE IF EXISTS quiz_attempts CASCADE;
 DROP TABLE IF EXISTS user_progress CASCADE;
 DROP TABLE IF EXISTS questions CASCADE;
@@ -94,6 +97,35 @@ CREATE TABLE user_progress (
     last_accessed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (user_id, module_id)
 );
+
+-- ANNOUNCEMENTS: platform activity feed shown on the User Dashboard.
+-- Auto-logged whenever an admin creates / updates / deletes a module, lesson,
+-- quiz, or question. See Data/AnnouncementHelper.cs for the write path.
+CREATE TABLE announcements (
+    id SERIAL PRIMARY KEY,
+    action VARCHAR(20) NOT NULL,            -- 'added' | 'updated' | 'removed'
+    target_type VARCHAR(20) NOT NULL,       -- 'module' | 'lesson' | 'quiz' | 'question'
+    target_name VARCHAR(200) NOT NULL,      -- e.g. "Lists & Dictionaries"
+    parent_name VARCHAR(200),               -- e.g. for a lesson: parent module name
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_announcements_created_at ON announcements(created_at DESC);
+
+-- COMMENTS: per-module discussion forum with admin replies.
+-- A row with parent_comment_id IS NULL is a top-level student comment.
+-- A row with parent_comment_id IS NOT NULL is an admin reply to that comment.
+-- is_read marks whether an admin has seen the comment (for the Forum filter).
+CREATE TABLE comments (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    module_id INT NOT NULL REFERENCES modules(id) ON DELETE CASCADE,
+    parent_comment_id INT REFERENCES comments(id) ON DELETE CASCADE,
+    body TEXT NOT NULL,
+    is_read BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_comments_module ON comments(module_id);
+CREATE INDEX idx_comments_parent ON comments(parent_comment_id);
 
 -- SEED: sample modules so the catalog isn't empty on first run
 INSERT INTO modules (title, blurb, difficulty, duration, color, icon, sort_order) VALUES
