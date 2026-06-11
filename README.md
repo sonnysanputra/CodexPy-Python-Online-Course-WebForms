@@ -263,7 +263,7 @@ CodexPy/                              # Solution root
 | TP Number | Name | Role |
 |---|---|---|
 | TP078930 | Kenneth Nathaniel Wong | Group leader, Admin module |
-| TP084754 | Sonny Sanputra | Admin module, database integration |
+| TP084754 | Sonny Sanputra | Admin module, database integration, AI Agent |
 | TP079385 | Darren Daniel Leopold | User module, authentication |
 | TP078834 | Gerald Zaklee Oeiyono | User module, authentication |
 
