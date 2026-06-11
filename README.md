@@ -6,7 +6,7 @@
 
 **A web-based Python learning platform for school students, university students, and self-learners.**
 
-CodexPy delivers structured Python lessons through learning modules, MCQ quizzes, and progress tracking. Admins manage all content (modules, lessons, quizzes, questions, users) through a dedicated admin panel; learners register, browse modules, read lessons, take quizzes, and track their score history.
+CodexPy delivers structured Python lessons through learning modules, MCQ quizzes, and progress tracking. Admins manage all content (modules, lessons, quizzes, questions, users) through a dedicated admin panel; learners register, browse modules, read lessons, take quizzes, and track their score history. A locally built in AI Agent powered by Google Gemini is included as a helper for users during their studies.
 
 Group assignment for **CT050-3-2-WAPP — Web Applications**, Asia Pacific University, Group 12.
 
